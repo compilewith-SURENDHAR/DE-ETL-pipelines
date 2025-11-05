@@ -1,0 +1,1 @@
+python3 /mnt/d/surendhar/projects/ETL-hadoop/load.py
