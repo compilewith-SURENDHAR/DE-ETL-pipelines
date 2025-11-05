@@ -1,0 +1,35 @@
+resources:
+  jobs:
+    earthquake_pipeline:
+      name: earthquake_pipeline
+      trigger:
+        pause_status: UNPAUSED
+        periodic:
+          interval: 1
+          unit: DAYS
+      tasks:
+        - task_key: 1-Data_Ingestion
+          notebook_task:
+            notebook_path: /Workspace/Users/surendhar010104@gmail.com/Earthquake_ETL/1-data_ingestion_nb
+            source: WORKSPACE
+        - task_key: 2-Bronze_task
+          depends_on:
+            - task_key: 1-Data_Ingestion
+          notebook_task:
+            notebook_path: /Workspace/Users/surendhar010104@gmail.com/Earthquake_ETL/2-bronze_nb
+            source: WORKSPACE
+        - task_key: 3-silver_task
+          depends_on:
+            - task_key: 2-Bronze_task
+          notebook_task:
+            notebook_path: /Workspace/Users/surendhar010104@gmail.com/Earthquake_ETL/3-silver_nb
+            source: WORKSPACE
+        - task_key: 4-gold_task
+          depends_on:
+            - task_key: 3-silver_task
+          notebook_task:
+            notebook_path: /Workspace/Users/surendhar010104@gmail.com/Earthquake_ETL/4-gold_nb
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
